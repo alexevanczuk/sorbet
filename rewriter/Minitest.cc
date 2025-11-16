@@ -912,11 +912,11 @@ ast::ExpressionPtr runSingle(core::MutableContext ctx, bool isClass, const ast::
             // (like let-defined methods) don't clobber the outer context's definitions.
             auto testName = fmt::format("<it_behaves_like '{}'>", argString);
             auto isolatedClassName =
-                ast::MK::UnresolvedConstantParts(arg.loc(), {ctx.state.enterNameConstant(testName)});
+                ast::MK::UnresolvedConstantParts(send->loc.copyWithZeroLength(), {ctx.state.enterNameConstant(testName)});
 
             // Inherit from self to maintain access to outer context
             ast::ClassDef::ANCESTORS_store ancestors;
-            ancestors.emplace_back(ast::MK::Self(arg.loc()));
+            ancestors.emplace_back(ast::MK::Self(send->loc.copyWithZeroLength()));
 
             // Include the shared examples module in this isolated context
             auto sharedExamplesName = makeSharedExamplesConstant(ctx, arg);
